@@ -9,7 +9,6 @@ import type { ICase } from '@/types/ICase'
 const DEFAULT_CENTER = { longitude: -122.3321, latitude: 47.6062 }
 const DEFAULT_ZOOM = 13
 
-// Raster tile style — fetched via fetch(), not <img>, so img-src CSP does not apply
 const MAP_STYLE: StyleSpecification = {
   version: 8,
   sources: {
@@ -42,7 +41,6 @@ export function CaseMap({ cases, selectedCaseId, onSelectCase }: CaseMapProps) {
     zoom: DEFAULT_ZOOM,
   })
 
-  // Fly to user's geolocation when it resolves
   useEffect(() => {
     if (coords) {
       setViewState(vs => ({ ...vs, latitude: coords.latitude, longitude: coords.longitude }))
