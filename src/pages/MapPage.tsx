@@ -6,6 +6,7 @@ import { CaseCallout } from '@/components/CaseCallout'
 import { CreateCaseButton } from '@/components/CreateCaseButton'
 import { useCases } from '@/hooks/useCases'
 import { useFilteredCases } from '@/hooks/useFilteredCases'
+import { openNewCaseForm } from '@/utils/d365Navigation'
 import type { ICase } from '@/types/ICase'
 
 const useStyles = makeStyles({
@@ -45,7 +46,7 @@ export default function MapPage() {
       />
       <div className={styles.toolbar}>
         <SearchBar value={searchTerm} onSearch={setSearchTerm} />
-        <CreateCaseButton onClick={() => console.log('TODO Phase 5: Create new case')} />
+        <CreateCaseButton onClick={openNewCaseForm} />
       </div>
       <CaseCallout
         incident={selectedCase}

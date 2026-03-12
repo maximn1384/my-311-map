@@ -12,6 +12,7 @@ import {
   tokens,
 } from '@fluentui/react-components'
 import { OpenRegular } from '@fluentui/react-icons'
+import { openCaseRecord } from '@/utils/d365Navigation'
 import { getCaseTypeLabel } from '@/constants/caseTypeColors'
 import type { ICase } from '@/types/ICase'
 
@@ -90,7 +91,7 @@ export function CaseCallout({ incident, onClose }: CaseCalloutProps) {
               appearance="primary"
               icon={<OpenRegular />}
               onClick={() => {
-                console.log('TODO Phase 5: Open in D365', incident?.incidentid)
+                if (incident) openCaseRecord(incident.incidentid)
               }}
             >
               Open in Dynamics 365

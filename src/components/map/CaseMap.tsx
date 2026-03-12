@@ -1,26 +1,30 @@
-import { useMemo, useEffect } from 'react'
-import { MapContainer, TileLayer, useMap } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
+import { useState, useMemo, useEffect } from 'react'
+import Map, { NavigationControl } from 'react-map-gl/maplibre'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import type { StyleSpecification } from 'maplibre-gl'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { CasePin } from './CasePin'
 import type { ICase } from '@/types/ICase'
 
-// Default center: Seattle, WA — used until geolocation resolves
-const DEFAULT_CENTER: [number, number] = [47.6062, -122.3321]
+const DEFAULT_CENTER = { longitude: -122.3321, latitude: 47.6062 }
 const DEFAULT_ZOOM = 13
 
-interface RecenterMapProps {
-  latitude: number
-  longitude: number
-}
-
-// Must live inside MapContainer to access the Leaflet map instance
-function RecenterMap({ latitude, longitude }: RecenterMapProps) {
-  const map = useMap()
-  useEffect(() => {
-    map.flyTo([latitude, longitude], DEFAULT_ZOOM)
-  }, [latitude, longitude, map])
-  return null
+// Raster tile style — fetched via fetch(), not <img>, so img-src CSP does not apply
+const MAP_STYLE: StyleSpecification = {
+  version: 8,
+  sources: {
+    osm: {
+      type: 'raster',
+      tiles: [
+        'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      ],
+      tileSize: 256,
+      attribution: '© OpenStreetMap contributors',
+    },
+  },
+  layers: [{ id: 'osm-tiles', type: 'raster', source: 'osm' }],
 }
 
 interface CaseMapProps {
@@ -32,25 +36,32 @@ interface CaseMapProps {
 export function CaseMap({ cases, selectedCaseId, onSelectCase }: CaseMapProps) {
   const { coords } = useGeolocation()
 
+  const [viewState, setViewState] = useState({
+    longitude: DEFAULT_CENTER.longitude,
+    latitude: DEFAULT_CENTER.latitude,
+    zoom: DEFAULT_ZOOM,
+  })
+
+  // Fly to user's geolocation when it resolves
+  useEffect(() => {
+    if (coords) {
+      setViewState(vs => ({ ...vs, latitude: coords.latitude, longitude: coords.longitude }))
+    }
+  }, [coords])
+
   const plottableCases = useMemo(
     () => cases.filter(c => c.hippo_latitude !== null && c.hippo_longitude !== null),
     [cases],
   )
 
   return (
-    <MapContainer
-      center={DEFAULT_CENTER}
-      zoom={DEFAULT_ZOOM}
-      style={{ height: '100%', width: '100%' }}
+    <Map
+      {...viewState}
+      onMove={e => setViewState(e.viewState)}
+      style={{ width: '100%', height: '100%' }}
+      mapStyle={MAP_STYLE}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-
-      {coords && (
-        <RecenterMap latitude={coords.latitude} longitude={coords.longitude} />
-      )}
+      <NavigationControl position="top-left" />
 
       {plottableCases.map(c => (
         <CasePin
@@ -60,6 +71,6 @@ export function CaseMap({ cases, selectedCaseId, onSelectCase }: CaseMapProps) {
           onSelect={onSelectCase}
         />
       ))}
-    </MapContainer>
+    </Map>
   )
 }
