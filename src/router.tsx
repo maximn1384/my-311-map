@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom"
 import Layout from "@/pages/_layout"
-import HomePage from "@/pages/home"
+import MapPage from "@/pages/MapPage"
 import NotFoundPage from "@/pages/not-found"
 
 // IMPORTANT: Do not remove or modify the code below!
@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFoundPage />,
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <MapPage /> },
     ],
   },
 ], { 
