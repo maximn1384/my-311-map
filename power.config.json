@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "appId": null,
+  "appDisplayName": "My 311 Map",
+  "region": "prod",
+  "environmentId": "c0a2c3a7-4492-e08f-9833-a5311b49f50f",
+  "description": "",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:3000",
+  "logoPath": "Default",
+  "connectionReferences": {
+    "8205c90b-4f29-46af-a7a8-b345099a4fd5": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+      "displayName": "Microsoft Dataverse",
+      "dataSources": [
+        "commondataserviceforapps"
+      ],
+      "authenticationType": "Oauth",
+      "dataSets": {}
+    }
+  },
+  "databaseReferences": {}
+}
