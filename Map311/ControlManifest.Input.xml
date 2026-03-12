@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="MaximN" constructor="Map311" version="1.0.0" display-name-key="Map311_Display_Key" description-key="Map311_Desc_Key" control-type="standard" >
+    <data-set name="sampleDataSet" display-name-key="DataSet_Display_Key" cds-data-set-options="displayCommandBar:false;displayViewSelector:false;displayQuickFind:false">
+      <property-set name="latitude" display-name-key="Latitude_Display_Key" description-key="Latitude_Desc_Key" of-type="Decimal" usage="bound" required="true" />
+      <property-set name="longitude" display-name-key="Longitude_Display_Key" description-key="Longitude_Desc_Key" of-type="Decimal" usage="bound" required="true" />
+      <property-set name="title" display-name-key="Title_Display_Key" description-key="Title_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="status" display-name-key="Status_Display_Key" description-key="Status_Desc_Key" of-type="SingleLine.Text" usage="bound" required="false" />
+      <property-set name="category" display-name-key="Category_Display_Key" description-key="Category_Desc_Key" of-type="SingleLine.Text" usage="bound" required="false" />
+      <property-set name="address" display-name-key="Address_Display_Key" description-key="Address_Desc_Key" of-type="SingleLine.Text" usage="bound" required="false" />
+    </data-set>
+    <property name="defaultLatitude" display-name-key="DefaultLatitude_Display_Key" description-key="DefaultLatitude_Desc_Key" of-type="Decimal" usage="input" default-value="40.7128" />
+    <property name="defaultLongitude" display-name-key="DefaultLongitude_Display_Key" description-key="DefaultLongitude_Desc_Key" of-type="Decimal" usage="input" default-value="-74.0060" />
+    <property name="defaultZoom" display-name-key="DefaultZoom_Display_Key" description-key="DefaultZoom_Desc_Key" of-type="Whole.None" usage="input" default-value="12" />
+    <resources>
+      <code path="index.ts" order="1"/>
+      <css path="css/Map311.css" order="1" />
+      <resx path="strings/Map311.1033.resx" version="1.0.0" />
+    </resources>
+    <feature-usage>
+      <uses-feature name="Device.captureAudio" required="false" />
+      <uses-feature name="Device.captureImage" required="false" />
+      <uses-feature name="Device.captureVideo" required="false" />
+      <uses-feature name="Device.getBarcodeValue" required="false" />
+      <uses-feature name="Device.getCurrentPosition" required="false" />
+      <uses-feature name="Device.pickFile" required="false" />
+      <uses-feature name="Utility" required="false" />
+      <uses-feature name="WebAPI" required="false" />
+    </feature-usage>
+  </control>
+</manifest>

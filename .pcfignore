@@ -1,0 +1,8 @@
+## Default PCF ignore file content. Learn how to customize it at https://aka.ms/pcf-ignore
+## Default ignore patterns for PCF projects
+
+node_modules/
+out/
+*.log
+.DS_Store
+.env
