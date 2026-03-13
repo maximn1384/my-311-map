@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Spinner, makeStyles, tokens } from '@fluentui/react-components'
+import { Spinner, MessageBar, MessageBarBody, makeStyles, tokens } from '@fluentui/react-components'
 import { CaseMap } from '@/components/map/CaseMap'
 import { SearchBar } from '@/components/SearchBar'
 import { CaseCallout } from '@/components/CaseCallout'
@@ -26,13 +26,25 @@ export default function MapPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCase, setSelectedCase] = useState<ICase | null>(null)
 
-  const { data: cases = [], isLoading } = useCases()
+  const { data: cases = [], isLoading, isError, error } = useCases()
   const filteredCases = useFilteredCases(cases, searchTerm)
 
   if (isLoading) {
     return (
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Spinner label="Loading cases…" />
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div style={{ flex: 1, padding: tokens.spacingVerticalM }}>
+        <MessageBar intent="error">
+          <MessageBarBody>
+            Failed to load cases: {error instanceof Error ? error.message : String(error)}
+          </MessageBarBody>
+        </MessageBar>
       </div>
     )
   }

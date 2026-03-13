@@ -45,7 +45,9 @@ export class DataverseCaseService implements ICaseService {
     }
 
     return (result.data.value ?? []).map(item => {
-      const p = item.dynamicProperties ?? {}
+      // The SDK types surface Dataverse fields via `dynamicProperties` but at
+      // runtime the fields are directly on the item object — cast accordingly.
+      const p = item as unknown as Record<string, unknown>
       return {
         incidentid: String(p['incidentid'] ?? ''),
         title: String(p['title'] ?? ''),
