@@ -1,4 +1,5 @@
 import { MicrosoftDataverseService } from '@/generated/services/MicrosoftDataverseService'
+import { getDataverseOrgUrl } from './orgContext'
 import type { ICaseService } from './ICaseService'
 import type { ICase } from '@/types/ICase'
 
@@ -18,25 +19,6 @@ const BASE_FILTER = 'hippo_latitude ne null and hippo_longitude ne null'
 const TOP = 500
 
 export class DataverseCaseService implements ICaseService {
-  // Cached org URL — resolved once via GetOrganizations then reused.
-  private static orgUrl: string | null = null
-
-  private static async getOrgUrl(): Promise<string> {
-    if (DataverseCaseService.orgUrl) {
-      return DataverseCaseService.orgUrl
-    }
-    const result = await MicrosoftDataverseService.GetOrganizations()
-    if (!result.success) {
-      throw new Error(result.error?.message ?? 'Failed to get Dataverse organizations')
-    }
-    const url = result.data.value?.[0]?.Url
-    if (!url) {
-      throw new Error('No Dataverse organization returned by GetOrganizations')
-    }
-    DataverseCaseService.orgUrl = url
-    return url
-  }
-
   async getCases(searchTerm?: string): Promise<ICase[]> {
     let filter = BASE_FILTER
 
@@ -46,7 +28,7 @@ export class DataverseCaseService implements ICaseService {
       filter += ` and (contains(title,'${escaped}') or contains(ticketnumber,'${escaped}'))`
     }
 
-    const orgUrl = await DataverseCaseService.getOrgUrl()
+    const orgUrl = await getDataverseOrgUrl()
 
     const result = await MicrosoftDataverseService.ListRecordsWithOrganization(
       orgUrl,
