@@ -50,7 +50,7 @@ export class DataverseCaseService implements ICaseService {
 
     const result = await MicrosoftDataverseService.ListRecordsWithOrganization(
       orgUrl,
-      'incident',
+      'incidents', // OData entity set name (plural) required when calling with explicit org URL
       undefined, // prefer
       undefined, // accept
       undefined, // x_ms_odata_metadata_full
