@@ -7,7 +7,10 @@ export function openCaseRecord(incidentid: string): void {
     console.warn('[d365Navigation] Xrm is not available outside the D365 host. incidentid:', incidentid)
     return
   }
-  void Xrm.Navigation.openForm({ entityName: 'incident', entityId: incidentid })
+  Xrm.Navigation.openForm({ entityName: 'incident', entityId: incidentid }).then(
+    () => { console.log('[d365Navigation] Case record opened:', incidentid) },
+    (err: unknown) => { console.error('[d365Navigation] openForm failed for case record:', err) },
+  )
 }
 
 export function openNewCaseForm(): void {
@@ -15,5 +18,9 @@ export function openNewCaseForm(): void {
     console.warn('[d365Navigation] Xrm is not available outside the D365 host.')
     return
   }
-  void Xrm.Navigation.openForm({ entityName: 'incident' })
+  console.log('[d365Navigation] Opening new case form via Xrm.Navigation.openForm')
+  Xrm.Navigation.openForm({ entityName: 'incident' }).then(
+    () => { console.log('[d365Navigation] New case form closed') },
+    (err: unknown) => { console.error('[d365Navigation] openForm failed for new case:', err) },
+  )
 }
