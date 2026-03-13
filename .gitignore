@@ -25,3 +25,7 @@ dist-ssr
 
 # Claude Code
 .claude/settings.local.json
+
+# Environment-specific config (org URL, app IDs)
+.env.production
+.env.local
